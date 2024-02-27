@@ -1,4 +1,6 @@
 import React from "react";
+import { Button } from "./components/Button";
+import { TodolistHeader } from "./components/TodolistHeader";
 
 type TodolistPropsType = {
   title: string;
@@ -11,32 +13,53 @@ export type TaskType = {
   isDone: boolean;
 };
 export const Todolist = ({ title, tasks }: TodolistPropsType) => {
+  // let tasksList;
+  // if (tasks.length === 0) {
+  //   tasksList = <span>Список пуст</span>;
+  // } else
+  //   tasksList = (
+  //     <ul>
+  //       {" "}
+  //       {tasks.map((task: TaskType) => {
+  //         return (
+  //           <li key={task.id}>
+  //             <input type="checkbox" checked={task.isDone} />
+  //             <span>{task.title}</span>
+  //           </li>
+  //         );
+  //       })}
+  //     </ul>
+  //   );
+
+  const tasksList: JSX.Element =
+    tasks.length === 0 ? (
+      <span>Список пуст</span>
+    ) : (
+      <ul>
+        {tasks.map((task: TaskType) => {
+          return (
+            <li key={task.id}>
+              <input type="checkbox" checked={task.isDone} />
+              <span>{task.title}</span>
+            </li>
+          );
+        })}
+      </ul>
+    );
+
   return (
     <div>
       <div className="todolist">
-        <h3>{title}</h3>
+        <TodolistHeader title={title} />
         <div>
           <input />
-          <button>+</button>
+          <Button title="+" />
         </div>
-        <ul>
-          <li>
-            <input type="checkbox" checked={tasks[0].isDone} />
-            <span>{tasks[0].title}</span>
-          </li>
-          <li>
-            <input type="checkbox" checked={tasks[1].isDone} />{" "}
-            <span>{tasks[1].title}</span>
-          </li>
-          <li>
-            <input type="checkbox" checked={tasks[2].isDone} />{" "}
-            <span>{tasks[2].title}</span>
-          </li>
-        </ul>
+        {tasksList}
         <div>
-          <button>All</button>
-          <button>Active</button>
-          <button>Completed</button>
+          <Button title="All" />
+          <Button title="Active" />
+          <Button title="Completed" />
         </div>
       </div>
     </div>

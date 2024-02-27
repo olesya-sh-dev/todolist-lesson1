@@ -16,6 +16,7 @@ function App() {
     { id: 4, title: "Water", isDone: false },
     { id: 5, title: "Milk", isDone: true },
     { id: 6, title: "Bread", isDone: true },
+    { id: 7, title: "Bread", isDone: true },
   ];
 
   return (
