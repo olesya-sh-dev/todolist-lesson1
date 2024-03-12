@@ -23,6 +23,8 @@ export const Todolist = ({
   removeTask,
   changeTodolistFilter,
 }: TodolistPropsType) => {
+  const taskTitleInput = React.useRef<HTMLInputElement>(null);
+
   // let tasksList;
   // if (tasks.length === 0) {
   //   tasksList = <span>Список пуст</span>;
@@ -41,9 +43,6 @@ export const Todolist = ({
   //     </ul>
   //   );
 
-  const [taskTitle, setTaskTitle] = React.useState("");
-  console.log(taskTitle);
-
   const tasksList: JSX.Element =
     tasks.length === 0 ? (
       <span>Список пуст</span>
@@ -60,43 +59,19 @@ export const Todolist = ({
         })}
       </ul>
     );
-  const addNewTaskHandler = () => {
-    addTask(taskTitle);
-    setTaskTitle("");
+  const addNewTask = () => {
+    if (taskTitleInput.current) {
+      addTask(taskTitleInput.current.value);
+      taskTitleInput.current.value = "";
+    }
   };
-  const maxTitleLength = 15;
-  const isAddTaskPssible =
-    taskTitle.length && taskTitle.length <= maxTitleLength;
-
   return (
     <div>
       <div className="todolist">
         <TodolistHeader title={title} />
         <div>
-          <input
-            value={taskTitle}
-            onKeyDown={(e) => {
-              if (
-                e.key === "Enter" &&
-                taskTitle.length &&
-                taskTitle.length < 15
-              ) {
-                addNewTaskHandler();
-              }
-            }}
-            onChange={(e) => {
-              setTaskTitle(e.currentTarget.value);
-            }}
-          />
-          <Button
-            title="+"
-            onClickHandler={addNewTaskHandler}
-            isDisabled={!isAddTaskPssible}
-          />
-          {!taskTitle.length && <div>Please enter task</div>}
-          {taskTitle.length > maxTitleLength && (
-            <div>taskTitle is too long</div>
-          )}
+          <input ref={taskTitleInput} />
+          <Button title="+" onClickHandler={addNewTask} />
         </div>
         {tasksList}
         <div>

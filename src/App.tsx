@@ -15,7 +15,7 @@ function App() {
     { id: v1(), title: "React & Redux", isDone: false },
   ]);
 
-  const [filter, setFilter] = React.useState<FilterValuesType>("active");
+  const [filter, setFilter] = React.useState<FilterValuesType>("all");
 
   const removeTask = (taskId: string) => {
     const updatedTasks = tasks.filter((task) => task.id !== taskId);
