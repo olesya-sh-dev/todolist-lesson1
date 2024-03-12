@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { ChangeEvent, useRef, KeyboardEvent } from "react";
 import { Button } from "./components/Button";
 import { TodolistHeader } from "./components/TodolistHeader";
 import { FilterValuesType } from "./App";
@@ -50,11 +50,14 @@ export const Todolist = ({
     ) : (
       <ul>
         {tasks.map((task: TaskType) => {
+          const removeTaskHandler = () => {
+            removeTask(task.id);
+          };
           return (
             <li key={task.id}>
               <input type="checkbox" checked={task.isDone} />
               <span>{task.title}</span>
-              <Button title="x" onClickHandler={() => removeTask(task.id)} />
+              <Button title="x" onClickHandler={removeTaskHandler} />
             </li>
           );
         })}
@@ -64,6 +67,23 @@ export const Todolist = ({
     addTask(taskTitle);
     setTaskTitle("");
   };
+
+  const onKeyDownAddNewTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && taskTitle.length && taskTitle.length < 15) {
+      addNewTaskHandler();
+    }
+  };
+
+  const taskTitleTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setTaskTitle(e.currentTarget.value);
+  };
+
+  const changeTodolistFilterHandlerCreator = (filter: FilterValuesType) => {
+    return () => {
+      changeTodolistFilter(filter);
+    };
+  };
+
   const maxTitleLength = 15;
   const isAddTaskPssible =
     taskTitle.length && taskTitle.length <= maxTitleLength;
@@ -75,18 +95,8 @@ export const Todolist = ({
         <div>
           <input
             value={taskTitle}
-            onKeyDown={(e) => {
-              if (
-                e.key === "Enter" &&
-                taskTitle.length &&
-                taskTitle.length < 15
-              ) {
-                addNewTaskHandler();
-              }
-            }}
-            onChange={(e) => {
-              setTaskTitle(e.currentTarget.value);
-            }}
+            onKeyDown={onKeyDownAddNewTaskHandler}
+            onChange={taskTitleTitleHandler}
           />
           <Button
             title="+"
@@ -102,15 +112,15 @@ export const Todolist = ({
         <div>
           <Button
             title="All"
-            onClickHandler={() => changeTodolistFilter("all")}
+            onClickHandler={changeTodolistFilterHandlerCreator("all")}
           />
           <Button
             title="Active"
-            onClickHandler={() => changeTodolistFilter("active")}
+            onClickHandler={changeTodolistFilterHandlerCreator("active")}
           />
           <Button
             title="Completed"
-            onClickHandler={() => changeTodolistFilter("completed")}
+            onClickHandler={changeTodolistFilterHandlerCreator("completed")}
           />
         </div>
       </div>
