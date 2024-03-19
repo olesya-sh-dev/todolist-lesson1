@@ -65,7 +65,9 @@ export const Todolist = ({
                 checked={task.isDone}
                 onChange={changeStatusHandler}
               />
-              <span>{task.title}</span>
+              <span className={task.isDone ? "taskDone" : "task"}>
+                {task.title}
+              </span>
               <Button title="x" onClickHandler={removeTaskHandler} />
             </li>
           );
