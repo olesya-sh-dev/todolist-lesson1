@@ -19,3 +19,9 @@
 .task {
   font-weight: bold;
 }
+.btnActive {
+  background-color: rgb(76, 95, 172);
+  color: white;
+  border: 2px solid rgb(30, 67, 219);
+  border-radius: 3px;
+}
