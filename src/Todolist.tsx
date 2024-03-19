@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef, KeyboardEvent } from "react";
+import React, { ChangeEvent, useRef, KeyboardEvent, useState } from "react";
 import { Button } from "./components/Button";
 import { TodolistHeader } from "./components/TodolistHeader";
 import { FilterValuesType } from "./App";
@@ -46,7 +46,7 @@ export const Todolist = ({
   //   );
 
   const [taskTitle, setTaskTitle] = React.useState("");
-  console.log(taskTitle);
+  const [inputError, setInputError] = useState<boolean>(false);
 
   const tasksList: JSX.Element =
     tasks.length === 0 ? (
@@ -77,7 +77,15 @@ export const Todolist = ({
       </ul>
     );
   const addNewTaskHandler = () => {
-    addTask(taskTitle);
+    const trimmedTaskTitle = taskTitle.trim();
+    if (trimmedTaskTitle) {
+      addTask(trimmedTaskTitle);
+    } else {
+      setInputError(true);
+      setTimeout(() => {
+        setInputError(false);
+      }, 3000);
+    }
     setTaskTitle("");
   };
 
@@ -87,7 +95,8 @@ export const Todolist = ({
     }
   };
 
-  const taskTitleTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const setTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    inputError && setInputError(false);
     setTaskTitle(e.currentTarget.value);
   };
 
@@ -98,7 +107,7 @@ export const Todolist = ({
   };
 
   const maxTitleLength = 15;
-  const isAddTaskPssible =
+  const isAddTaskPossible =
     taskTitle.length && taskTitle.length <= maxTitleLength;
 
   return (
@@ -107,16 +116,23 @@ export const Todolist = ({
         <TodolistHeader title={title} />
         <div>
           <input
+            className={inputError ? "inputError" : ""}
+            type="text"
+            placeholder="Enter task"
             value={taskTitle}
             onKeyDown={onKeyDownAddNewTaskHandler}
-            onChange={taskTitleTitleHandler}
+            onChange={setTaskTitleHandler}
           />
           <Button
             title="+"
             onClickHandler={addNewTaskHandler}
-            isDisabled={!isAddTaskPssible}
+            isDisabled={!isAddTaskPossible}
           />
-          {!taskTitle.length && <div>Please enter task</div>}
+          {!taskTitle.length && (
+            <div style={{ color: inputError ? "red" : "black" }}>
+              Please enter task
+            </div>
+          )}
           {taskTitle.length > maxTitleLength && (
             <div>taskTitle is too long</div>
           )}
