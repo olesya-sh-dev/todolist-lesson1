@@ -31,14 +31,14 @@ function App() {
     setTasks(updatedTasks);
   };
 
-  const changeTaskStatus = (taskId: string) => {
+  const changeTaskStatus = (taskId: string, newIsDoneValue: boolean) => {
     // const task = tasks.find(t => t.id === taskId)
     // if (task){
     //   task.isDone = !task.isDone//мутируем таску
     //   setTasks([...tasks])
     // }
     const updatedState = tasks.map((t) =>
-      t.id === taskId ? { ...t, isDone: !t.isDone } : t
+      t.id === taskId ? { ...t, isDone: newIsDoneValue } : t
     );
     setTasks(updatedState);
   };
