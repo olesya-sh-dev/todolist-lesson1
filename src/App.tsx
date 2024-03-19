@@ -5,7 +5,6 @@ import { v1 } from "uuid";
 
 export type FilterValuesType = "all" | "active" | "completed";
 function App() {
-  console.log(v1());
   //BLL:
   const todolistTitle = "What to learn";
 
@@ -16,7 +15,7 @@ function App() {
   ]);
 
   const [filter, setFilter] = React.useState<FilterValuesType>("all");
-
+  //CRUD tasks
   const removeTask = (taskId: string) => {
     const updatedTasks = tasks.filter((task) => task.id !== taskId);
     setTasks(updatedTasks);
@@ -32,6 +31,18 @@ function App() {
     setTasks(updatedTasks);
   };
 
+  const changeTaskStatus = (taskId: string) => {
+    // const task = tasks.find(t => t.id === taskId)
+    // if (task){
+    //   task.isDone = !task.isDone//мутируем таску
+    //   setTasks([...tasks])
+    // }
+    const updatedState = tasks.map((t) =>
+      t.id === taskId ? { ...t, isDone: !t.isDone } : t
+    );
+    setTasks(updatedState);
+  };
+  //filter
   const changeTodolistFilter = (filter: FilterValuesType) => {
     setFilter(filter);
   };
@@ -60,11 +71,9 @@ function App() {
         tasks={filteredTasks}
         addTask={addTask}
         removeTask={removeTask}
+        changeTaskStatus={changeTaskStatus}
         changeTodolistFilter={changeTodolistFilter}
       />
-      {/* Todolist(
-        {title: "What to learn"}
-      ) */}
     </div>
   );
 }
